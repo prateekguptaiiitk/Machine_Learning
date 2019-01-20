@@ -6,20 +6,6 @@ from matplotlib.colors import ListedColormap
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-wine_dataset = load_wine()
-X = wine_dataset.data[:,[2,3]]
-y = wine_dataset.target
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
-
-sc = StandardScaler()
-sc.fit(X_train)
-X_train_std = sc.transform(X_train)
-X_test_std = sc.transform(X_test)
-
-knn = KNeighborsClassifier(n_neighbors=5, p =2, metric='minkowski')
-knn.fit(X_train_std, y_train)
-
 def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
     # setup marker generator and color map
     markers = ('s','x','o','^','v')
@@ -48,12 +34,28 @@ def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
         X_test, y_test=X[test_idx,:], y[test_idx]
         plt.scatter(X_test[:,0], X_test[:, 1], c='', edgecolor='black', alpha=1.0, linewidth=1, marker='o', s=100, label='test set')
 
-X_combined_std = np.vstack((X_train_std, X_test_std))
-y_combined = np.hstack((y_train, y_test))
+if __name__ == '__main__':
+    wine_dataset = load_wine()
+    X = wine_dataset.data[:,[2,3]]
+    y = wine_dataset.target
 
-plot_decision_regions(X_combined_std, y_combined, classifier=knn, test_idx=range(105,150))
-plt.xlabel("Alcohol")
-plt.ylabel("Malic Acid")
-plt.legend(loc="upper left")
-plt.show()
-print("Accuracy: {}".format(100*knn.score(X_train_std,y_train)))
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+
+    sc = StandardScaler()
+    sc.fit(X_train)
+    X_train_std = sc.transform(X_train)
+    X_test_std = sc.transform(X_test)
+
+    knn = KNeighborsClassifier(n_neighbors=5, p =2, metric='minkowski')
+    knn.fit(X_train_std, y_train)
+
+    X_combined_std = np.vstack((X_train_std, X_test_std))
+    y_combined = np.hstack((y_train, y_test))
+
+    plot_decision_regions(X_combined_std, y_combined, classifier=knn, test_idx=range(105,150))
+    plt.xlabel("Alcohol")
+    plt.ylabel("Malic Acid")
+    plt.legend(loc="upper left")
+    plt.title("Wine Classification")
+    plt.show()
+    print("Accuracy: {}".format(100*knn.score(X_train_std,y_train)))
