@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.datasets import load_wine
+from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from matplotlib.colors import ListedColormap
@@ -35,9 +35,9 @@ def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
         plt.scatter(X_test[:,0], X_test[:, 1], c='', edgecolor='black', alpha=1.0, linewidth=1, marker='o', s=100, label='test set')
 
 if __name__ == '__main__':
-    wine_dataset = load_wine()
-    X = wine_dataset.data[:,[2,3]]
-    y = wine_dataset.target
+    iris_dataset = load_iris()
+    X = iris_dataset.data[:,[2,3]]
+    y = iris_dataset.target
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
 
@@ -53,9 +53,10 @@ if __name__ == '__main__':
     y_combined = np.hstack((y_train, y_test))
 
     plot_decision_regions(X_combined_std, y_combined, classifier=knn, test_idx=range(105,150))
-    plt.xlabel("Alcohol")
-    plt.ylabel("Malic Acid")
+    plt.suptitle("K-Nearest Neighbor Classifier")
+    plt.xlabel("Petal Length [cm]")
+    plt.ylabel("Petal Width [cm]")
     plt.legend(loc="upper left")
-    plt.title("Wine Classification")
+    plt.title("Iris Flower Classification")
     plt.show()
-    print("Accuracy: {}".format(100*knn.score(X_train_std,y_train)))
+    print("Accuracy: {}".format(100*knn.score(X_test_std,y_test)))
