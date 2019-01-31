@@ -24,6 +24,7 @@ def lin_regplot(X,y,model):
     return None
 
 lin_regplot(X,y,lr)
+plt.suptitle("Linear Regression")
 plt.xlabel('Average number of rooms [RM] (standardized)')
 plt.ylabel('Price in  $1000s [MEDV] (standardized)')
 plt.show()
